@@ -286,3 +286,39 @@ style.textContent = `
 document.head.appendChild(style);
 
 console.log('✨ Qaed Al Fursan - Website geladen');
+
+// Add premium cursor effect
+document.addEventListener('mousemove', (e) => {
+    const cursor = document.createElement('div');
+    cursor.style.cssText = `
+        position: fixed;
+        width: 4px;
+        height: 4px;
+        background: rgba(201, 169, 97, 0.4);
+        border-radius: 50%;
+        pointer-events: none;
+        left: ${e.clientX}px;
+        top: ${e.clientY}px;
+        z-index: 9999;
+        animation: cursorFade 0.8s ease-out forwards;
+    `;
+    document.body.appendChild(cursor);
+    
+    setTimeout(() => cursor.remove(), 800);
+});
+
+// Cursor fade animation
+const cursorStyle = document.createElement('style');
+cursorStyle.textContent = `
+    @keyframes cursorFade {
+        from {
+            transform: scale(1);
+            opacity: 1;
+        }
+        to {
+            transform: scale(3);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(cursorStyle);
