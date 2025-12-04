@@ -25,6 +25,7 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 80px;
 }
 
 body {
@@ -33,6 +34,23 @@ body {
     background: var(--bg-white);
     line-height: 1.6;
     overflow-x: hidden;
+}
+
+/* Smooth fade-in animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Parallax effect */
+.parallax {
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .container {
@@ -74,6 +92,14 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+}
+
+.header.scrolled {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.95);
 }
 
 .navbar {
@@ -185,6 +211,7 @@ body {
 .hero {
     background: var(--bg-white);
     padding: 4rem 0;
+    overflow: hidden;
 }
 
 .hero-slider {
@@ -193,6 +220,18 @@ body {
 
 .hero-slide {
     display: none;
+    animation: fadeSlideIn 0.8s ease-out;
+}
+
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .hero-slide.active {
@@ -268,10 +307,30 @@ body {
     text-decoration: none;
     font-weight: 600;
     font-size: 0.95rem;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     display: inline-block;
     border: none;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
 }
 
 .btn-primary {
@@ -282,7 +341,7 @@ body {
 .btn-primary:hover {
     background: #333333;
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 }
 
 .btn-outline {
@@ -307,6 +366,8 @@ body {
 
 .hero-image {
     position: relative;
+    overflow: hidden;
+    border-radius: 8px;
 }
 
 .hero-image img {
@@ -314,6 +375,11 @@ body {
     height: auto;
     object-fit: cover;
     border-radius: 8px;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hero-image:hover img {
+    transform: scale(1.05);
 }
 
 /* ========== VIDEO SECTION ========== */
@@ -458,13 +524,13 @@ body {
     border-radius: 8px;
     text-align: center;
     box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     overflow: hidden;
 }
 
 .note-card:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-8px);
 }
 
 .note-image {
@@ -477,6 +543,11 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.note-card:hover .note-image img {
+    transform: scale(1.1);
 }
 
 .note-card h3 {
@@ -538,12 +609,20 @@ body {
     border-radius: 6px;
     cursor: pointer;
     border: 2px solid transparent;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 0.7;
 }
 
-.thumbnail:hover,
+.thumbnail:hover {
+    border-color: var(--accent-gold);
+    opacity: 1;
+    transform: scale(1.05);
+}
+
 .thumbnail.active {
     border-color: var(--accent-gold);
+    opacity: 1;
+    box-shadow: 0 4px 12px rgba(201, 169, 97, 0.3);
 }
 
 .product-brand {

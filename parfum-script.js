@@ -1,16 +1,17 @@
 /* ========================================
    QAED AL FURSAN - Modern JavaScript
-   Preview-only interactions
+   Preview-only interactions with smooth animations
 ======================================== */
 
 // Initialize all components
 document.addEventListener('DOMContentLoaded', function() {
     initializeThumbnails();
-    initializeNewsletter();
     initializeSmoothScroll();
     initializeActiveNav();
     initializeMobileMenu();
     initializeScrollAnimations();
+    initializeHeaderScroll();
+    initializeParallax();
 });
 
 // Product Image Thumbnails
@@ -150,28 +151,62 @@ function initializeMobileMenu() {
     }
 }
 
-// Scroll Animations
+// Scroll Animations with Intersection Observer
 function initializeScrollAnimations() {
     const observerOptions = {
         threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+        rootMargin: '0px 0px -100px 0px'
     };
     
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+        entries.forEach((entry, index) => {
             if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+                // Staggered animation delay
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, index * 100);
             }
         });
     }, observerOptions);
     
-    // Animate collection cards
-    document.querySelectorAll('.collection-card, .note-card').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'all 0.6s ease';
+    // Animate all sections and cards
+    document.querySelectorAll('.note-card, .product-showcase, .hero-content-wrapper, .section-header').forEach(el => {
+        el.classList.add('fade-in');
         observer.observe(el);
+    });
+}
+
+// Header scroll effect
+function initializeHeaderScroll() {
+    const header = document.querySelector('.header');
+    let lastScroll = 0;
+    
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll > 100) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+        
+        lastScroll = currentScroll;
+    });
+}
+
+// Parallax effect for hero image
+function initializeParallax() {
+    const heroImage = document.querySelector('.hero-image');
+    
+    if (!heroImage) return;
+    
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * 0.3;
+        
+        if (scrolled < 800) {
+            heroImage.style.transform = `translateY(${rate}px)`;
+        }
     });
 }
 
